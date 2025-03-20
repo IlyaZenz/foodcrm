@@ -1,15 +1,9 @@
-import { Component, inject } from '@angular/core'
+import { Component } from '@angular/core'
 import { ListDetailLayoutComponent } from '../../_main/template/list-detail-layout.component'
-import { MatIcon } from '@angular/material/icon'
-import { MatIconButton } from '@angular/material/button'
 import { TopBar } from '../../_main/navs/top-bar.component'
-import { AsyncPipe } from '@angular/common'
-import { InfinityScrollComponent } from '../../elements/infinity-scroll.component'
 import { MatListItem, MatListItemTitle, MatNavList } from '@angular/material/list'
-import { RouterLink, RouterLinkActive } from '@angular/router'
-import { UsersService } from '../../../data/services/users.service'
+import { RouterLink } from '@angular/router'
 import { BannerService } from '../../../data/services/banners.service'
-import { Observable } from 'rxjs'
 
 @Component({
   providers: [BannerService],

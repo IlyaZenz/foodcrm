@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsNotEmpty, IsNotIn, IsNumber, IsString } from "class-validator"
+import { IsArray,IsNotEmpty, IsNumber, IsString } from "class-validator"
 import { OrderItem } from "../orderItems.entity"
 
 export class addOrderDto {
