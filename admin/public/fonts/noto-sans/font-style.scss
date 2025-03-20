@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "Noto Sans";
+  src: url("./NotoSans-VariableFont.ttf") format("truetype");
+  src: url("./NotoSans-VariableFont.ttf") format("truetype") tech("variations");
+  font-optical-sizing: auto;
+  font-weight: 300 700;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}

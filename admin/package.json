@@ -1,0 +1,54 @@
+{
+  "name": "admin",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --proxy-config proxy/proxy.conf.json --configuration development",
+    "startls": "ng serve --proxy-config proxy/proxy-local-server.conf.json --configuration local",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^19.1.1",
+    "@angular/cdk": "^19.1.0",
+    "@angular/common": "^19.1.1",
+    "@angular/compiler": "^19.1.1",
+    "@angular/core": "^19.1.1",
+    "@angular/forms": "^19.1.1",
+    "@angular/material": "^19.1.0",
+    "@angular/platform-browser": "^19.1.1",
+    "@angular/platform-browser-dynamic": "^19.1.1",
+    "@angular/router": "^19.1.1",
+    "@auth0/angular-jwt": "^5.2.0",
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
+    "material-symbols": "^0.27.2",
+    "rxjs": "~7.8.0",
+    "slugify": "^1.6.6",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.1.2",
+    "@angular/cli": "^19.1.2",
+    "@angular/compiler-cli": "^19.1.1",
+    "@types/jasmine": "~5.1.0",
+    "jasmine-core": "~5.2.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "prettier": "^3.4.2",
+    "typescript": "~5.5.2"
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 80,
+    "htmlWhitespaceSensitivity": "strict",
+    "bracketSameLine": true,
+    "trailingComma": "none"
+  }
+}

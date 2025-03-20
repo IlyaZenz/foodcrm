@@ -1,0 +1,57 @@
+const a = [
+  {
+    required:true,
+    title:"testo",
+    multiVariants:true,
+    multiSelect:false,
+    options:[
+      {
+        title:"tonkaya",
+        price:400,
+      },
+      {
+        title:"standart",
+        price:300,
+      }
+    ]
+  },
+  {
+    required:true,
+    title:"nachinka",
+    multiVariants:true,
+    multiSelect:false,
+    options:[
+      {
+        title:"gribi",
+        price:250,
+      },
+      {
+        title:"kolbasa",
+        price:450,
+      }
+    ]
+  },
+  {
+    required:false,
+    title:"dobavki",
+    multiVariants:true,
+    multiSelect:true,
+    options:[
+      {
+        title:"ketchup",
+        price:250,
+      },
+      {
+        title:"majonez",
+        price:450,
+      }
+    ]
+  },
+  {
+    required: false,
+    title: "ostriy souse",
+    multiVariants: false,
+    multiSelect:false,
+    price:450
+  }
+]

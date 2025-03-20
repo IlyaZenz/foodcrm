@@ -1,0 +1,8 @@
+{
+  "/api/**": {
+    "target": "https://crm.khan-mebel.kz/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}

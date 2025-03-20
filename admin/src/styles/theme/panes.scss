@@ -1,0 +1,67 @@
+@use "@angular/material" as mat;
+@use "../md-theme.scss" as theme;
+
+.pane-wrapper {
+  display: flex;
+  max-width: 1440px;
+  margin: 0 auto;
+  height: 100%;
+
+  .pane {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    //height: 100%;
+    //height: fit-content;
+
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+
+    border-radius: 16px;
+
+    padding: 0 1em 1em;
+    box-sizing: border-box;
+    position: relative;
+
+    &:not(.no-background) {
+      //background-color: var(--mat-sys-surface-container);
+      background-color: mat.get-theme-color(
+          theme.$m3-light-theme,
+          surface-container
+      );
+
+      mat-toolbar {
+        background-color: mat.get-theme-color(
+            theme.$m3-light-theme,
+            surface-container
+        );
+      }
+    }
+
+    @media screen and (min-width: 841px) {
+      flex: 1 1 auto;
+    }
+
+    &.first {
+      &.compact {
+        @media screen and (min-width: 841px) {
+          box-sizing: border-box;
+          flex: 1 1 calc(100% / 3);
+        }
+      }
+
+      &.small-with {
+        @media screen and (min-width: 841px) {
+          max-width: calc(100% / 3);
+        }
+      }
+    }
+  }
+
+  .space-divider {
+    @media screen and (min-width: 840px) {
+      width: 24px;
+    }
+  }
+}
