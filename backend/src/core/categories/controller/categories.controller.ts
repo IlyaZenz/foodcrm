@@ -2,7 +2,7 @@ import {
   Body,
   Controller, Delete,
   Get,
-  Header,
+  Header, Param,
   Post,
   Put,
   Query,
@@ -43,7 +43,9 @@ export class CategoriesController {
 
   @Header("content-type", "application/json")
   @Get(":url")
-  getOne() {}
+  getOne(@Param('url') url:string) {
+    return this.service.getOne(url)
+  }
 
   @Header("content-type", "application/json")
   @Put()
@@ -55,7 +57,9 @@ export class CategoriesController {
 
   @Header("content-type", "application/json")
   @Delete()
-  delete() {}
+  delete(id:number) {
+    return this.service.delete(id)
+  }
 
   @Header("content-type", "application/json")
   @Delete()
