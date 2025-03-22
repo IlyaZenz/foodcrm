@@ -1,28 +1,15 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, ManyToOne } from "typeorm"
 import { Category } from "../categories/categorie.entity"
+import { Page } from "../pages/pages.entity"
 
-@Entity("Products")
-export class Product {
-  @PrimaryGeneratedColumn()
-  id: number
-
-  @Column()
-  title: string
-
-  @Column()
-  titleKz: string
+@Entity("products")
+export class Product extends Page {
 
   @Column({default: true})
   isNew: boolean
 
-  @Column({default: true})
-  isActive: boolean
-
   @Column({default: false})
   isFavorite: boolean
-
-  @Column()
-  sortOrder: number
 
   @ManyToOne(() => Category, (category) => category.products)
   category: Category;

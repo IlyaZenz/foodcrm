@@ -36,6 +36,17 @@
   - тесты 
   - продажи (монетизация)
 
+/
+/category-name
+/category-name/product-name
+/page-name
+
+/admin/admin-module-name
+
+/api/private-endpoint
+/api/public/public-endpoint
+
+/files/assets
 
 ## Future Updates
 - Nest Lazy Load Modules

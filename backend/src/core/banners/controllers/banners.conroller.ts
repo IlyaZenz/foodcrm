@@ -19,7 +19,7 @@ import { UpdateBannerDto } from "../dtos/update-banner.dto"
 
 @UseGuards(RolesGuard([Role.admin, Role.content]))
 @UseGuards(AuthGuard("jwt"))
-@Controller("content/banners")
+@Controller("banners")
 export class BannersController {
   constructor(private service: BannersService) {}
 

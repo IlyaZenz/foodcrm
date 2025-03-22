@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
 import { OrderItem } from "./orderItems.entity"
 
 @Entity("orders")
@@ -7,26 +7,26 @@ export class Order {
   id: number
 
   @Column()
-  status: string
+  status: string // создать enum
 
-  @Column()
-  date: string
+  @CreateDateColumn() // ознакомиться и задать формат
+  date: Date
 
-  @Column()
-  totalPrice: number;
+  @Column({ default: 0 })
+  totalPrice: number
 
-  @Column()
-  paidBonuses: number;
+  @Column({ default: 0 })
+  paidBonuses: number
 
-  @Column()
-  paidMoney: number;
+  @Column({ default: 0 })
+  paidMoney: number
 
-  @Column()
-  accruedBonuses: number;
+  @Column({ default: 0 })
+  accruedBonuses: number
 
-  @Column()
-  platform: string
+  @Column({nullable:true})
+  platform?: string // создать enum
 
-  @OneToMany(() => OrderItem, item => item.order)
-  items: OrderItem[];
+  @OneToMany(() => OrderItem, (item) => item.order)
+  items: OrderItem[]
 }
