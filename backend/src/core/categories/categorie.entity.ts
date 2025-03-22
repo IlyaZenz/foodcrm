@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
+import {Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
 import { Product } from "../Products/products.entity"
 import { Page } from "../pages/pages.entity"
 
