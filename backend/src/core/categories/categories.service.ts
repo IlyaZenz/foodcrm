@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
+import { DeleteResult, Repository } from "typeorm"
 import { Category } from "./categorie.entity"
 import { AddCategoryDto } from "./dtos/add-category.dto"
 import slugify from "slugify"
@@ -35,5 +35,17 @@ export class CategoriesService {
       .take(query.limit)
       .skip(query.offset)
       .getMany()
+  }
+
+  getOne(url:string):Promise<Category>{
+    return this.repo
+      .createQueryBuilder("category")
+      .select(["category.id","category.title","category.titleKz"])
+      .where({url})
+      .getOneOrFail()
+  }
+
+  delete(id: number): Promise<DeleteResult> {
+    return this.repo.delete(id)
   }
 }

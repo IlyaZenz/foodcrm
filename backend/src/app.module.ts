@@ -4,6 +4,7 @@ import { TypeOrmModule } from "@nestjs/typeorm"
 import { ServeStaticModule } from "@nestjs/serve-static"
 import { join } from "path"
 import { BannersModule } from "./core/banners/banners.module"
+import { CategoriesModule } from "./core/categories/categories.module"
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { BannersModule } from "./core/banners/banners.module"
           }),
         ]
       : []),
-    AuthUsersModule,BannersModule
+    AuthUsersModule,BannersModule,CategoriesModule
   ],
 })
 export class AppModule {}
