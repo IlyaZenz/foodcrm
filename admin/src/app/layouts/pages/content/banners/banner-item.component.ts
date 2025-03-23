@@ -1,21 +1,30 @@
-import { Component, inject, Injector, Input, numberAttribute } from '@angular/core'
+import {
+  Component,
+  inject,
+  Injector,
+  Input,
+  numberAttribute
+} from '@angular/core'
 import { MatIcon } from '@angular/material/icon'
 import { MatIconButton } from '@angular/material/button'
 import { TopBar } from '../../../_main/navs/top-bar.component'
 import { MatCard, MatCardContent } from '@angular/material/card'
 import { Observable, share } from 'rxjs'
-import { UserDirty } from '../../../../data/interfaces/user.interface'
-import { UsersService } from '../../../../data/services/users.service'
 import { BannerService } from '../../../../data/services/banners.service'
 import { AsyncPipe } from '@angular/common'
 import { Banner } from '../../../../data/interfaces/banner.interface'
 import { MatDialog } from '@angular/material/dialog'
-import { ConfirmDialog, ConfirmDialogComponent } from '../../../dialogs/confirm-dialog.component'
+import {
+  ConfirmDialog,
+  ConfirmDialogComponent
+} from '../../../dialogs/confirm-dialog.component'
 import { DrawerService } from '../../../_main/drawer/drawer.service'
 import { BannerDataDrawerComponent } from '../../../drawers/banner-data-drawer.component'
+import { ImagesService } from '../../../../core/handlers/images/images.service'
 
 @Component({
   imports: [MatIcon, MatIconButton, TopBar, MatCard, MatCardContent, AsyncPipe],
+  providers: [ImagesService],
   template: `
     @let data = data$ | async;
     <top-bar backUrlOnCompact=".." sticky>
@@ -23,6 +32,9 @@ import { BannerDataDrawerComponent } from '../../../drawers/banner-data-drawer.c
         <mat-icon>edit</mat-icon>
       </button>
       @if (data) {
+        <button mat-icon-button (click)="addPhoto(data.id)">
+          <mat-icon>add_photo_alternate</mat-icon>
+        </button>
         <button mat-icon-button (click)="delete(data.id)">
           <mat-icon>delete</mat-icon>
         </button>
@@ -35,15 +47,17 @@ import { BannerDataDrawerComponent } from '../../../drawers/banner-data-drawer.c
       <mat-card appearance="outlined">
         <mat-card-content> Описание: {{ data.content }}</mat-card-content>
       </mat-card>
+      <!--TODO вывести картинку if(data.img)-->
+      <!--TODO сделать удаление картинки-->
     }
   `
 })
 export default class BannerItemComponent {
-
   private service = inject(BannerService)
   private dialog = inject(MatDialog)
-  private drawer  = inject(DrawerService)
-  private injector  = inject(Injector)
+  private drawer = inject(DrawerService)
+  private injector = inject(Injector)
+  private imageService = inject(ImagesService)
   data$: Observable<Banner> = this.service.item$().pipe(share())
 
   @Input({ transform: numberAttribute, alias: 'id' })
@@ -51,14 +65,23 @@ export default class BannerItemComponent {
     this.service.downloadOne(id)
   }
 
-  changeData(){
-    this.drawer.openDrawer(BannerDataDrawerComponent,
-      {mode: 'over',
+  addPhoto(id:number) {
+    const files$ = this.imageService.pick([],{multiple:true, fileType:'images'})
+    this.imageService.uploadOne(files$, `api/banners/${id}/images`).subscribe(
+      // TODO next  this.service.downloadOne(id)
+    )
+
+  }
+
+  changeData() {
+    this.drawer.openDrawer(BannerDataDrawerComponent, {
+      mode: 'over',
       position: 'end',
       largeMode: true,
       cmpData: this.service.item() as Banner,
       closeOnNavigation: true,
-      injector: this.injector})
+      injector: this.injector
+    })
   }
 
   delete(id: number) {

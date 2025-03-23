@@ -40,7 +40,7 @@ export class BannerService {
     const params = new HttpParams().appendAll({ limit, offset: this.offset })
 
     this.http
-      .get<Banner[]>(`api/content/banners?${params}`)
+      .get<Banner[]>(`api/banners?${params}`)
       .pipe(
         tap((data) => {
           const storeData = new Map(
@@ -69,7 +69,7 @@ export class BannerService {
 
   downloadOne(id: number) {
     this.http
-      .get<Banner>(`api/content/banners/${id}`)
+      .get<Banner>(`api/banners/${id}`)
       .pipe(
         tap({
           next: (banner) =>
@@ -89,7 +89,7 @@ export class BannerService {
 
   add(banner: { title: string; desc: string }) {
     this.http
-      .post<Banner>('api/content/banners', banner)
+      .post<Banner>('api/banners', banner)
       .pipe(
         tap({
           next: (value) => {
@@ -113,7 +113,7 @@ export class BannerService {
     const banner: Banner | null = this.item()
     if (!banner) return of(false)
     return this.http
-      .put<Banner>(`api/content/banners/${banner.id}`, { ...banner, ...data })
+      .put<Banner>(`api/banners/${banner.id}`, { ...banner, ...data })
       .pipe(
         tap({
           next: (updatedBanner) => {
@@ -132,7 +132,7 @@ export class BannerService {
 
   delete(id: number) {
     this.http
-      .delete<boolean>(`api/content/banners/${id}`)
+      .delete<boolean>(`api/banners/${id}`)
       .pipe(
         tap({
           next: () => {

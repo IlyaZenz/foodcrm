@@ -5,7 +5,7 @@ import { filesDestination } from "../../configs/files.config"
 
 export const fileStorageAndNameTransform = (
   dest: string,
-  randomName = true,
+  randomName = true
 ) => {
   return diskStorage({
     destination: `${filesDestination}${dest}`,
@@ -19,11 +19,11 @@ export const fileStorageAndNameTransform = (
       } else {
         fileName = slugify(
           file.originalname.replace(extname(file.originalname), ""),
-          { lower: true },
+          { lower: true }
         )
         fileName = `${fileName}-${Date.now()}`
       }
       cb(null, `${fileName}${extname(file.originalname)}`)
-    },
+    }
   })
 }
