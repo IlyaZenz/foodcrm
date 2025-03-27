@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsString } from "class-validator"
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from "class-validator"
 
 export class AddCategoryDto {
   @IsString()
@@ -6,8 +6,9 @@ export class AddCategoryDto {
   title: string
 
   @IsString()
-  titleKz: string // обязательное???
+  titleKz: string
 
+  @IsOptional()
   @IsBoolean()
   isActive: boolean
 }

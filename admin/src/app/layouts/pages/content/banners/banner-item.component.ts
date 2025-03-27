@@ -47,7 +47,11 @@ import { ImagesService } from '../../../../core/handlers/images/images.service'
       <mat-card appearance="outlined">
         <mat-card-content> Описание: {{ data.content }}</mat-card-content>
       </mat-card>
-      <!--TODO вывести картинку if(data.img)-->
+      @if (data.image){
+        <mat-card appearance="outlined">
+          <mat-card-content><img [src]="data.image" alt=""></mat-card-content>
+        </mat-card>
+      }
       <!--TODO сделать удаление картинки-->
     }
   `
@@ -68,7 +72,9 @@ export default class BannerItemComponent {
   addPhoto(id:number) {
     const files$ = this.imageService.pick([],{multiple:true, fileType:'images'})
     this.imageService.uploadOne(files$, `api/banners/${id}/images`).subscribe(
-      // TODO next  this.service.downloadOne(id)
+      {
+        next: () => { this.service.downloadOne(id) },
+      }
     )
 
   }

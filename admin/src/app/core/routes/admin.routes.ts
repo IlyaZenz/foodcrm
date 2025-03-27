@@ -55,6 +55,17 @@ export const adminRoutes: Routes = [
             ]
           },
         ]
+      },
+      {
+        path: "categories",
+        loadComponent: () =>
+          import('../../layouts/pages/categories/category-list.component'),
+        children:[
+          {
+            path: ':id',
+            loadComponent: () => import('../../layouts/pages/categories/category-item.component')
+          }
+        ]
       }
     ]
   },

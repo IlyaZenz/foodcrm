@@ -30,18 +30,23 @@ export class CategoriesService {
   getAll(query: LimitOffsetDto) {
     return this.repo
       .createQueryBuilder("category")
-      .select(["category.id", "category.title", "category.titleKz"])
+      .select([
+        "category.id",
+        "category.title",
+        "category.titleKz",
+        "category.url"
+      ])
       .orderBy("category.sortOrder", "ASC")
       .take(query.limit)
       .skip(query.offset)
       .getMany()
   }
 
-  getOne(url:string):Promise<Category>{
+  getOne(url: string): Promise<Category> {
     return this.repo
       .createQueryBuilder("category")
-      .select(["category.id","category.title","category.titleKz"])
-      .where({url})
+      .select(["category.id", "category.title", "category.titleKz"])
+      .where({ url })
       .getOneOrFail()
   }
 

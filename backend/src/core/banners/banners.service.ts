@@ -39,7 +39,7 @@ export class BannersService {
   get(id: number): Promise<Banner> {
     return this.repo
       .createQueryBuilder("banner")
-      .select(["banner.id", "banner.title", "banner.content"])
+      .select(["banner.id", "banner.title", "banner.content", "banner.image"])
       .where({ id })
       .getOneOrFail()
   }

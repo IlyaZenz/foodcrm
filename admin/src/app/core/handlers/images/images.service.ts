@@ -24,7 +24,6 @@ export class ImagesService {
 
     input.click()
     return fromEvent(input, 'change').pipe(
-      // TODO рефактор map deprecated
       map((event: any) => {
         const selectedFiles: File[] = Array.from(event.target.files)
         const newFiles = [] as File[]
@@ -50,7 +49,7 @@ export class ImagesService {
           newFiles.push(newFile)
         }
         return [...existingFiles, ...newFiles]
-      }, first())
+      }),first()
     )
   }
 

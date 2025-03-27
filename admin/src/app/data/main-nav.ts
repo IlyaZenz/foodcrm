@@ -7,7 +7,6 @@ export const mainNav: MainNavItem[] = [
     url: '/',
     icon: 'home'
   },
-  // TODO добавить пункт контент
   {
     title: 'Сотрудники',
     url: '/users',
@@ -23,5 +22,10 @@ export const mainNav: MainNavItem[] = [
     title: 'Контент',
     url: '/content',
     icon: 'ad'
+  },
+  {
+    title: 'Категории',
+    url: '/categories',
+    icon: 'category'
   }
 ]
