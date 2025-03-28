@@ -63,6 +63,7 @@ export class BannersService {
     return await this.repo.save<Banner>({ ...banner, ...data })
   }
 
+
   delete(id: number): Promise<DeleteResult> {
     return this.repo.delete(id)
   }

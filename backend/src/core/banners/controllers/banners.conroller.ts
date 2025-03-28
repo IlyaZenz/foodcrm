@@ -24,7 +24,6 @@ import { FileInterceptor } from "@nestjs/platform-express"
 import { fileStorageAndNameTransform } from "../../files/file-storage-and-name-transform.utils"
 import { fileFilter } from "../../files/file-ext-filter.utils"
 import { FileSharpPipe } from "../../files/file-sharp.pipe"
-import { AuthenticatedRequest } from "../../../shared/authenticated-request.interface"
 
 @UseGuards(RolesGuard([Role.admin, Role.content]))
 @UseGuards(AuthGuard("jwt"))
@@ -41,11 +40,12 @@ export class BannersController {
     })
   )
   uploadImage(
+    @Param('id', ParseIntPipe) id: number,
     @UploadedFile(new FileSharpPipe({ width: 90, height: 90 }))
     file: Express.Multer.File
   ) {
-    console.log(file)
-    return file
+    const webFriendlyPath = file.path.replace(/\\/g, '/');
+    return this.service.update(id,{image:webFriendlyPath} as UpdateBannerDto)
   }
 
   @Header("content-type", "application/json")
@@ -70,6 +70,12 @@ export class BannersController {
   @Get()
   getAll(@Query() query: LimitOffsetDto) {
     return this.service.getAll(query)
+  }
+
+  @Header("content-type", "application/json")
+  @Delete(":id/images")
+  deleteImage(@Param("id", ParseIntPipe) id: number) {
+      return this.service.update(id, { image: null } as UpdateBannerDto)
   }
 
   @Header("content-type", "application/json")

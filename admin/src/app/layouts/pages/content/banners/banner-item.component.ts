@@ -49,6 +49,9 @@ import { ImagesService } from '../../../../core/handlers/images/images.service'
       </mat-card>
       @if (data.image){
         <mat-card appearance="outlined">
+          <button mat-icon-button (click)="deleteImage(data.id)">
+            <mat-icon>close</mat-icon>
+          </button>
           <mat-card-content><img [src]="data.image" alt=""></mat-card-content>
         </mat-card>
       }
@@ -76,6 +79,10 @@ export default class BannerItemComponent {
         next: () => { this.service.downloadOne(id) },
       }
     )
+
+  }
+
+  deleteImage(id:number){
 
   }
 
