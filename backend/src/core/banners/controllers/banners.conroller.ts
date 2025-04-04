@@ -41,10 +41,10 @@ export class BannersController {
   )
   uploadImage(
     @Param('id', ParseIntPipe) id: number,
-    @UploadedFile(new FileSharpPipe({ width: 90, height: 90 }))
+    @UploadedFile(new FileSharpPipe({ width: 500, height: 500 }))
     file: Express.Multer.File
   ) {
-    const webFriendlyPath = file.path.replace(/\\/g, '/');
+    const webFriendlyPath = file.path.replace(/\\/g, '/').replace('files/upload', 'upload');
     return this.service.update(id,{image:webFriendlyPath} as UpdateBannerDto)
   }
 
@@ -75,7 +75,7 @@ export class BannersController {
   @Header("content-type", "application/json")
   @Delete(":id/images")
   deleteImage(@Param("id", ParseIntPipe) id: number) {
-      return this.service.update(id, { image: null } as UpdateBannerDto)
+      return this.service.deleteImage(id)
   }
 
   @Header("content-type", "application/json")

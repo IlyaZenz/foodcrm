@@ -5,6 +5,7 @@ import { ServeStaticModule } from "@nestjs/serve-static"
 import { join } from "path"
 import { BannersModule } from "./core/banners/banners.module"
 import { CategoriesModule } from "./core/categories/categories.module"
+import { ProductsModule } from "./core/Products/products.module"
 
 @Module({
   imports: [
@@ -18,15 +19,21 @@ import { CategoriesModule } from "./core/categories/categories.module"
       },
     }),
     // Статические файлы при разработке на localhost
-    ...(process.env["NODE_ENV"] === "dev"
-      ? [
-          ServeStaticModule.forRoot({
-            rootPath: join(__dirname, "..", "files", "upload"),
-            serveRoot: "/upload/",
-          }),
-        ]
-      : []),
-    AuthUsersModule,BannersModule,CategoriesModule
+    // ...(process.env["NODE_ENV"] === "dev"
+    //   ? [
+    //     ServeStaticModule.forRoot({
+    //       rootPath: join(__dirname, "..", "files", "upload").replace(/\\/g, "/"),
+    //       serveRoot: "/upload/",
+    //     }),
+    //     ]
+    //   : []),
+
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "..", "files", "upload"),
+      serveRoot: "/upload/",
+    }),
+
+    AuthUsersModule,BannersModule,CategoriesModule,ProductsModule
   ],
 })
 export class AppModule {}

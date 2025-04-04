@@ -40,10 +40,6 @@ export const adminRoutes: Routes = [
             path: 'banners',
             loadComponent: () => import('../../layouts/pages/content/banners/banners-list.component'),
             children: [
-              // {
-              //   path: 'add',
-              //   loadComponent: () => import('../../layouts/pages/users/user-add.component')
-              // },
               {
                 path: ':id',
                 loadComponent: () => import('../../layouts/pages/content/banners/banner-item.component')
@@ -58,12 +54,41 @@ export const adminRoutes: Routes = [
       },
       {
         path: "categories",
+        children: [
+          {
+            path: "",
+            loadComponent: () =>
+              import('../../layouts/pages/categories/category-list.component'),
+          },
+          {
+            path: ":categoryUrl",
+            loadComponent: () => import('../../layouts/pages/categories/products/product-list.component'),
+            children: [
+              {
+                path: "",
+                loadComponent: () => import('../../layouts/pages/categories/category-item.component')
+              },
+              {
+                path: ":url",
+                loadComponent: () => import('../../layouts/pages/categories/products/product-item.component')
+              },
+            ]
+          }
+        ]
+      },
+      {
+        path: "orders",
         loadComponent: () =>
-          import('../../layouts/pages/categories/category-list.component'),
-        children:[
+          import('../../layouts/pages/orders/order-list.component'),
+        children: [
           {
             path: ':id',
-            loadComponent: () => import('../../layouts/pages/categories/category-item.component')
+            loadComponent: () =>
+              import('../../layouts/pages/orders/order-item.component')
+          },
+          {
+            path: '**',
+            redirectTo: ''
           }
         ]
       }

@@ -9,5 +9,4 @@ export class Category extends Page {
 
   @OneToMany(() => Product, (product) => product.category)
   products: Product[];
-
 }

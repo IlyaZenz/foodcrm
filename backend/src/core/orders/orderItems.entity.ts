@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm"
 import { Order } from "./orders.entity"
+import { ProductVariant } from "../Products/productVariant.entity"
 
 @Entity('orderItems')
 export class OrderItem {
@@ -18,4 +19,6 @@ export class OrderItem {
   @ManyToOne(() => Order, order => order.items)
   order: Order;
 
+  @OneToMany(() => ProductVariant, variant => variant.product, { cascade: true })
+  variants: ProductVariant[];
 }

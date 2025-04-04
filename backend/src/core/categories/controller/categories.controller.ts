@@ -48,16 +48,18 @@ export class CategoriesController {
   }
 
   @Header("content-type", "application/json")
-  @Put()
-  update() {}
+  @Put(":id")
+  update(@Param('id') id: number,@Body() data: AddCategoryDto) {
+    return this.service.update(id, data)
+  }
 
   @Header("content-type", "application/json")
   @Put()
   updateImage() {}
 
   @Header("content-type", "application/json")
-  @Delete()
-  delete(id:number) {
+  @Delete(":id")
+  delete(@Param('id') id: number) {
     return this.service.delete(id)
   }
 

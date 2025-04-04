@@ -6,6 +6,9 @@ import { Banner } from "./banners.entity"
 import { AddBannerDto } from "./dtos/add-banner.dto"
 import { UpdateBannerDto } from "./dtos/update-banner.dto"
 import slugify from "slugify"
+import { join } from "path"
+import { unlink } from "fs"
+import * as fs from "node:fs"
 
 @Injectable()
 export class BannersService {
@@ -63,6 +66,25 @@ export class BannersService {
     return await this.repo.save<Banner>({ ...banner, ...data })
   }
 
+  async deleteImage(id: number): Promise<Banner> {
+    const banner = await this.repo.findOneBy({ id: id })
+    if (!banner) {
+      throw new Error("Banner not found")
+    }
+    if (banner.image) {
+      const imagePath = join(global.__basedir, 'files', banner.image);
+
+      console.log("image", imagePath);
+
+      fs.unlink(imagePath, (error) => {
+        if (error) return console.log(error); // если возникла ошибка
+        console.log("File deleted");
+      });
+    }
+
+    banner.image = null;
+    return await this.repo.save(banner);
+  }
 
   delete(id: number): Promise<DeleteResult> {
     return this.repo.delete(id)

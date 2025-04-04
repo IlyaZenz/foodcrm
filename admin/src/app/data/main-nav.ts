@@ -27,5 +27,10 @@ export const mainNav: MainNavItem[] = [
     title: 'Категории',
     url: '/categories',
     icon: 'category'
-  }
+  },
+  {
+    title: 'Заказы',
+    url: '/orders',
+    icon: 'orders'
+  },
 ]

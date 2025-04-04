@@ -5,6 +5,7 @@ import { Category } from "./categorie.entity"
 import { AddCategoryDto } from "./dtos/add-category.dto"
 import slugify from "slugify"
 import { LimitOffsetDto } from "../../shared/dtos/limit-offset.dto"
+import { Banner } from "../banners/banners.entity"
 
 @Injectable()
 export class CategoriesService {
@@ -27,14 +28,22 @@ export class CategoriesService {
     return this.repo.save(savedCategory)
   }
 
+  async update(id: number, data:AddCategoryDto): Promise<Category> {
+    const category = await this.repo.findOneBy({ id: id })
+    if (!category) {
+      throw new Error("Category not found")
+    }
+
+    return await this.repo.save<Category>({ ...category, ...data })
+  }
+
   getAll(query: LimitOffsetDto) {
     return this.repo
       .createQueryBuilder("category")
       .select([
         "category.id",
         "category.title",
-        "category.titleKz",
-        "category.url"
+        "category.url",
       ])
       .orderBy("category.sortOrder", "ASC")
       .take(query.limit)
@@ -45,7 +54,7 @@ export class CategoriesService {
   getOne(url: string): Promise<Category> {
     return this.repo
       .createQueryBuilder("category")
-      .select(["category.id", "category.title", "category.titleKz"])
+      .select(["category.id", "category.title", "category.titleKz", "category.isActive"])
       .where({ url })
       .getOneOrFail()
   }

@@ -6,10 +6,10 @@ import {
   numberAttribute
 } from '@angular/core'
 import { MatIcon } from '@angular/material/icon'
-import { MatIconButton } from '@angular/material/button'
+import { MatButton, MatIconButton } from '@angular/material/button'
 import { TopBar } from '../../../_main/navs/top-bar.component'
 import { MatCard, MatCardContent } from '@angular/material/card'
-import { Observable, share } from 'rxjs'
+import { first, Observable, share } from 'rxjs'
 import { BannerService } from '../../../../data/services/banners.service'
 import { AsyncPipe } from '@angular/common'
 import { Banner } from '../../../../data/interfaces/banner.interface'
@@ -21,9 +21,18 @@ import {
 import { DrawerService } from '../../../_main/drawer/drawer.service'
 import { BannerDataDrawerComponent } from '../../../drawers/banner-data-drawer.component'
 import { ImagesService } from '../../../../core/handlers/images/images.service'
+import { environment } from '../../../../../environments/environment.local'
 
 @Component({
-  imports: [MatIcon, MatIconButton, TopBar, MatCard, MatCardContent, AsyncPipe],
+  imports: [
+    MatIcon,
+    MatIconButton,
+    TopBar,
+    MatCard,
+    MatCardContent,
+    AsyncPipe,
+    MatButton
+  ],
   providers: [ImagesService],
   template: `
     @let data = data$ | async;
@@ -47,15 +56,17 @@ import { ImagesService } from '../../../../core/handlers/images/images.service'
       <mat-card appearance="outlined">
         <mat-card-content> Описание: {{ data.content }}</mat-card-content>
       </mat-card>
-      @if (data.image){
-        <mat-card appearance="outlined">
-          <button mat-icon-button (click)="deleteImage(data.id)">
-            <mat-icon>close</mat-icon>
+      @if (data.image) {
+        <mat-card appearance="outlined" class="d-flex flex-column align-items-center">
+          <mat-card-content
+            ><img [src]="url + data.image" alt="123"
+          /></mat-card-content>
+          <button mat-button class="w-100" (click)="deleteImage(data.id)">
+            <mat-icon>delete</mat-icon>
+            <span>Удалить</span>
           </button>
-          <mat-card-content><img [src]="data.image" alt=""></mat-card-content>
         </mat-card>
       }
-      <!--TODO сделать удаление картинки-->
     }
   `
 })
@@ -65,6 +76,7 @@ export default class BannerItemComponent {
   private drawer = inject(DrawerService)
   private injector = inject(Injector)
   private imageService = inject(ImagesService)
+  url = environment.imageUrl
   data$: Observable<Banner> = this.service.item$().pipe(share())
 
   @Input({ transform: numberAttribute, alias: 'id' })
@@ -72,18 +84,29 @@ export default class BannerItemComponent {
     this.service.downloadOne(id)
   }
 
-  addPhoto(id:number) {
-    const files$ = this.imageService.pick([],{multiple:true, fileType:'images'})
-    this.imageService.uploadOne(files$, `api/banners/${id}/images`).subscribe(
-      {
-        next: () => { this.service.downloadOne(id) },
+  addPhoto(id: number) {
+    const files$ = this.imageService.pick([], {
+      multiple: true,
+      fileType: 'images'
+    })
+    this.imageService.uploadOne(files$, `api/banners/${id}/images`).subscribe({
+      next: () => {
+        this.service.downloadOne(id)
       }
-    )
-
+    })
   }
 
-  deleteImage(id:number){
-
+  deleteImage(id: number) {
+    this.dialog
+      .open(ConfirmDialogComponent, {
+        data: {
+          content: '<p>Удалить изображение ?</p>'
+        } as ConfirmDialog
+      })
+      .afterClosed()
+      .subscribe((toDelete?: boolean) => {
+        if (toDelete) this.service.deleteImage(id).pipe(first()).subscribe({})
+      })
   }
 
   changeData() {

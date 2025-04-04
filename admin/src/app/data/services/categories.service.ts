@@ -1,10 +1,20 @@
 import { inject, Injectable } from '@angular/core'
-import { BehaviorSubject, catchError, EMPTY, filter, first, Observable, tap } from 'rxjs'
+import {
+  BehaviorSubject,
+  catchError,
+  EMPTY,
+  filter,
+  first,
+  Observable,
+  of,
+  tap
+} from 'rxjs'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Router } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { DrawerService } from '../../layouts/_main/drawer/drawer.service'
 import { Category } from '../interfaces/category.interface'
+import { Banner } from '../interfaces/banner.interface'
 
 @Injectable()
 export class CategoriesService {
@@ -19,7 +29,9 @@ export class CategoriesService {
   private drawer = inject(DrawerService)
 
   item$(): Observable<Category> {
-    return this._item$.pipe(filter((category): category is Category => !!category))
+    return this._item$.pipe(
+      filter((category): category is Category => !!category)
+    )
   }
 
   items$(): Observable<Category[]> {
@@ -76,7 +88,7 @@ export class CategoriesService {
           next: (category) =>
             this._item$.next({
               ...category,
-              url,
+              url
             })
         }),
         catchError(() => {
@@ -88,7 +100,7 @@ export class CategoriesService {
       .subscribe()
   }
 
-  add(category: { title: string, titleKz: string; }) {
+  add(category: { title: string; titleKz: string }) {
     this.http
       .post<Category>('api/categories', category)
       .pipe(
@@ -103,6 +115,45 @@ export class CategoriesService {
             this.snackBar.open('Категория добавлен')
           },
           error: () => this.snackBar.open('Возникла ошибка')
+        }),
+        first()
+      )
+      .subscribe()
+  }
+
+  update(data: Partial<Category>): Observable<boolean | Category> {
+    const category: Category | null = this.item()
+    if (!category) return of(false)
+    return this.http
+      .put<Category>(`api/categories/${category.id}`, { ...category, ...data })
+      .pipe(
+        tap({
+          next: (updatedCategory) => {
+            this._item$.next({ ...category, ...updatedCategory })
+            const items = this._items$
+              .getValue()
+              .map((i) => (i.id === category.id ? { ...i, ...updatedCategory } : i))
+            this._items$.next(items)
+            this.snackBar.open('Данные обновлены')
+            this.drawer.close()
+          },
+          error: () => this.snackBar.open('Не удалось обновить данные')
+        })
+      )
+  }
+
+  delete(id: number) {
+    this.http
+      .delete<boolean>(`api/categories/${id}`)
+      .pipe(
+        tap({
+          next: () => {
+            let category: Category[] = this._items$.getValue()
+            this._items$.next(category.filter((i) => i.id !== id))
+            this.snackBar.open('Категория удалена')
+            this.router.navigateByUrl('/categories').then()
+          },
+          error: () => this.snackBar.open('Не удалось удалить категорию')
         }),
         first()
       )

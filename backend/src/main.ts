@@ -12,6 +12,8 @@ async function bootstrap() {
       transform: true,
     }),
   )
+  global.__basedir = join(__dirname, '..');
+
   if (process.env.NODE_ENV === "dev") {
     app.enableCors()
   }

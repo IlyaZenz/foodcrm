@@ -148,6 +148,26 @@ export class BannerService {
       .subscribe()
   }
 
+  deleteImage(id: number): Observable<boolean | Banner>{
+    const banner: Banner | null = this.item()
+    if (!banner) return of(false)
+    return this.http
+      .delete<Banner>(`api/banners/${id}/images`)
+      .pipe(
+        tap({
+          next: (updatedBanner) => {
+            this._item$.next({ ...banner, ...updatedBanner })
+            const items = this._items$
+              .getValue()
+              .map((i) => (i.id === banner.id ? { ...i, ...updatedBanner } : i))
+            this.snackBar.open('Изображение удалено')
+            this.router.navigateByUrl(`content/banners/${id}`).then()
+          },
+          error: () => this.snackBar.open('Не удалось удалить изображениеи')
+        })
+      )
+  }
+
   canLoadItems$(): Observable<boolean> {
     return this._canLoadItems$.asObservable()
   }

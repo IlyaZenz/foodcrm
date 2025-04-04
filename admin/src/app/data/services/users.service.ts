@@ -41,7 +41,6 @@ export class UsersService {
       .get<UserPreview[]>(`api/users?${params}`)
       .pipe(
         tap((data) => {
-          // TODO add comment
           const storeData = new Map(
             this._items$.getValue().map((item) => [item.id, item])
           )
